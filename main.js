@@ -65,7 +65,10 @@ async function signUp(email) {
     }
 
     // await page.screenshot({ path: "screenshot.png" });
-    const otp = await getOtp(email);
+    let otp = await getOtp(email);
+    while (otp.length == 0) {
+      otp = await getOtp(email);
+    }
     const otpInput = await page.waitForSelector("input.bwc__sc-rwpctr-1");
     // await page.screenshot({ path: `${email}-otp.png` });
     await page.type("input.bwc__sc-rwpctr-1", otp, { delay: 0.1 });
