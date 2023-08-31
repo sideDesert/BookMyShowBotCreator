@@ -48,7 +48,7 @@ async function signUp(email) {
     });
 
     console.log("Typing Email...");
-    // await page.screenshot({ path: "screenshot.png" });
+    // await page..nshot({ path: "screenshot.png" });
 
     await page.waitForSelector("input#emailId", { visible: true });
     await page.type("input#emailId", email, { delay: 0.03 });
@@ -66,7 +66,7 @@ async function signUp(email) {
 
     // await page.screenshot({ path: "screenshot.png" });
     const otp = await getOtp(email);
-    const otpInput = page.waitForSelector("input.bwc__sc-rwpctr-1");
+    const otpInput = await page.waitForSelector("input.bwc__sc-rwpctr-1");
     // await page.screenshot({ path: `${email}-otp.png` });
     await page.type("input.bwc__sc-rwpctr-1", otp, { delay: 0.1 });
 
@@ -80,5 +80,5 @@ async function signUp(email) {
   }
 }
 
-signUp("anewbegiining@adhva.co");
+signUp("newdhar@adhva.co");
 // const retryButton = await page.$x('//button[contains(text(), "Retry")]');

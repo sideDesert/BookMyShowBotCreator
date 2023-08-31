@@ -6,8 +6,6 @@ export async function getOtp(email) {
   const queryParams = {
     kind: "to",
     query: email,
-    start: 0,
-    limit: 1,
   };
   let otp = "";
   try {
