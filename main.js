@@ -7,12 +7,6 @@ const IS_PRODUCTION = process.env.NODE_ENV === "production";
 // puppeteer.launch() => Chrome running locally (on the same hardware)
 let browser = null;
 
-const classNames = {
-  modal: ".bwc__sc-1ihur1g-4",
-  continue: ".hmbiuL",
-  citiesList: ".bwc__sc-ttnkwg-19",
-};
-
 console.log("Opening Browser..");
 
 async function signUp(email) {
@@ -26,24 +20,26 @@ async function signUp(email) {
     console.log("Going to Book My Show");
     await page.goto("https://www.bookmyshow.com/");
 
-    await page.waitForSelector(classNames.modal, { visible: true });
+    await page.waitForXPath("//*[@id='modal-root']/div", { visible: true });
     // Select Hyderabad
     console.log("Selecting Location as Hyderabad...");
 
-    await page.evaluate(() => {
-      const els = document.querySelectorAll(".bwc__sc-ttnkwg-19");
-      els[3].click();
-    });
+    const hydSpan = await page.$x("//span[text()='Hyderabad']");
+    await hydSpan[hydSpan.length].click();
 
     // Click on SignIn and then Click on custom EMail
     console.log("Clicking on Sign In...");
-    let signInButton = await page.waitForSelector("div.bwc__sc-1nbn7v6-14");
+    let signInButton = await page.waitForXPath(
+      "//button[contains(text(), 'Sign')]"
+    );
     await signInButton.click();
 
     await page.evaluate(() => {
-      let buttons = document.querySelectorAll("div.bwc__sc-dh558f-10");
+      let buttons = $x("//*[@id='modal-root']//div[contains(text(),'Email')]");
       if (buttons.length > 0) {
-        buttons[1].children[0].click();
+        buttons[0].click();
+      } else {
+        console.log("Error: While Signing In Email Button NOT FOUND");
       }
     });
 
@@ -56,22 +52,29 @@ async function signUp(email) {
       visible: true,
     });
 
-    const contButton = await page.waitForSelector("button.hmbiuL", {
-      visible: true,
-    });
-    if (contButton) {
-      console.log("Clicking on Continue");
-      await contButton.click();
-    }
+    const contButton = await page.waitForXPath(
+      '//form//button[contains(text(), "Continue")]',
+      {
+        visible: true,
+      }
+    )[0];
+    setTimeout(async () => {
+      if (contButton) {
+        console.log("Clicking on Continue");
+        await contButton.click();
+      }
+    }, 600);
 
     // await page.screenshot({ path: "screenshot.png" });
     let otp = await getOtp(email);
     while (otp.length == 0) {
       otp = await getOtp(email);
     }
-    const otpInput = await page.waitForSelector("input.bwc__sc-rwpctr-1");
+    const otpInput = await page.waitForSelector(
+      '//*[@id="modal-root"]//form/div[1]/div[3]/input[1]'
+    );
     // await page.screenshot({ path: `${email}-otp.png` });
-    await page.type("input.bwc__sc-rwpctr-1", otp, { delay: 0.1 });
+    await otpInput.type(otp, { delay: 0.1 });
 
     await page.screenshot({ path: `${email}.png` });
   } catch (error) {
