@@ -14,6 +14,7 @@ if (-not (Test-Path $chromeProfile0Dir)) {
 
 
 # Create 50 additional profiles
+Write-Host "Creating 50 profiles..."
 for ($i = 1; $i -le 50; $i++) {
     if (-not (Test-Path $chromeProfile0Dir)) {
         Start-Process $chromeExePath -ArgumentList "--user-data-dir=`"$chromeProfile0Dir`"" -Wait

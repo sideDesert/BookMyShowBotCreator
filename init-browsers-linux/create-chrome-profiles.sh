@@ -1,10 +1,24 @@
-īī#!/bin/bash
+#!/bin/bash
 
-# to
-rm -r $HOME/chrome-profiles/*
-google-chrome --user-data-dir="$HOME/chrome-profiles/0"
+# Modify the path to the Chrome executable to match the installation path on your system
+chromeExePath="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 
-for i in {1..50}
-    do
-        cp -r "$HOME/chrome-profiles/0" "$HOME/chrome-profiles/${i}"
+# Clear the chrome-profiles directory
+chromeProfilesDir="$HOME/chrome-profiles"
+chromeProfile0Dir="$chromeProfilesDir/0"
+rm -rf "$chromeProfilesDir"/*
+mkdir -p "$chromeProfilesDir"
+
+# Create the 0 profile directory if it does not exist
+if [ ! -d "$chromeProfile0Dir" ]; then
+    "$chromeExePath" --user-data-dir="$chromeProfile0Dir"
+fi
+
+# Create 50 additional profiles
+echo "Creating 50 profiles..."
+for i in {1..50}; do
+    if [ ! -d "$chromeProfile0Dir" ]; then
+        "$chromeExePath" --user-data-dir="$chromeProfile0Dir"
+    fi
+    cp -r "$chromeProfile0Dir" "$chromeProfilesDir/$i"
 done
