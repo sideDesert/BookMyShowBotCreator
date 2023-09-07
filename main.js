@@ -83,6 +83,7 @@ async function signUp(email) {
     if (browser) {
       await browser.close();
     }
+    dsfsdfsf;
   }
 }
 
