@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-read -p "Enter the number of tabs to open: " num_tabs
+read -p "Enter the number of windows to open: " num_tabs
 read -p "Enter the URLs to open (separated by spaces): " urls
 
 IFS=' ' read -ra urls_array <<< "$urls"
