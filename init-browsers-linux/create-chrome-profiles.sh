@@ -5,6 +5,9 @@ chromeExePath="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 
 # Clear the chrome-profiles directory
 chromeProfilesDir="$HOME/chrome-profiles"
+if [ ! -d "$chromeProfilesDir" ]; then
+    mkdir "$chromeProfilesDir"
+fi
 chromeProfile0Dir="$chromeProfilesDir/0"
 rm -rf "$chromeProfilesDir"/*
 mkdir -p "$chromeProfilesDir"
